@@ -1,9 +1,5 @@
-import * as holo_st from "../src";
-import { promises as fs } from "fs";
-import * as path from "path";
+import * as holo_st from "./";
 
-holo_st.get_upcoming_streams("UCa9Y57gfeY0Zro_noHRVrnw").then(async (res) => {
+holo_st.get_upcoming_streams("UCQ0UDLQCjY0rmuxCDE38FGg").then(async (res) => {
     console.log(res);
-
-    // fs.writeFile(path.resolve("./temp/a.html"), res);
 });

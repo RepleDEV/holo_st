@@ -1,7 +1,7 @@
 {
     "name": "hololive_status",
     "version": "1.0.0",
-    "description": "",
+    "description": "Hololive Live Stream status checker",
     "main": "index.js",
     "scripts": {
         "prettier": "prettier --write .",
@@ -17,7 +17,9 @@
     "dependencies": {
         "axios": "^0.21.1",
         "cheerio": "^1.0.0-rc.5",
+        "dotenv": "^8.2.0",
         "googleapis": "^67.0.0",
+        "moment": "^2.29.1",
         "puppeteer": "^5.5.0"
     }
 }
