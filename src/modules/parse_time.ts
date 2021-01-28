@@ -1,5 +1,5 @@
-import moment from "moment";
+import moment,{ MomentObjectOutput } from "moment";
 
-export function parse_time(time: string): moment.MomentObjectOutput {
+export function parse_time(time: string): MomentObjectOutput {
     return moment(time).toObject();
 }

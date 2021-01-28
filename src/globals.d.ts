@@ -1,3 +1,5 @@
+import { MomentObjectOutput } from "moment";
+
 export interface YoutubeVideoListResponse {
     kind: string;
     etag: string;
@@ -76,7 +78,7 @@ export interface Stream {
 
     defaultAudioLanguage?: string;
 
-    scheduledStartTime: DateObject;
+    scheduledStartTime: MomentObjectOutput;
     activeLiveChatId?: string;
 }
 
@@ -85,6 +87,6 @@ export interface UpcomingStream extends Stream {
 }
 
 export interface OngoingStream extends Stream {
-    actualStartTime: DateObject;
+    actualStartTime: MomentObjectOutput;
     concurrentViewers: number;
 }

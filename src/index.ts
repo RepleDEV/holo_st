@@ -1,1 +1,1 @@
-export { get_upcoming_streams } from "./modules/get_upcoming_streams";
+export * from "./modules/get_upcoming_streams";
