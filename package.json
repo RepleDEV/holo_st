@@ -2,14 +2,16 @@
     "name": "hololive_status",
     "version": "1.0.0",
     "description": "Hololive Live Stream status checker",
-    "main": "index.js",
+    "main": "./dist",
     "scripts": {
         "prettier": "prettier --write .",
-        "watch": "tsc -w"
+        "watch": "tsc -w",
+        "postinstall": "tsc"
     },
     "keywords": [],
     "author": "",
     "license": "MIT",
+    "typings": "./typings/holo_st.d.ts",
     "devDependencies": {
         "@types/node": "^14.14.22",
         "@types/puppeteer": "^5.4.2"

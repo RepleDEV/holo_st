@@ -1,7 +1,7 @@
 // TODO: Looping of all the channels will actually be better
 // TODO: if done here :>
 
-import puppeteer, { Browser } from "puppeteer";
+import puppeteer from "puppeteer";
 import * as path from "path";
 
 import { Channels, OngoingStream, UpcomingStream } from "./globals";
