@@ -41,6 +41,9 @@ async function get_html(url: string, browser_p?: puppeteer.Browser): Promise<str
     return data;
 }
 
+// TODO: This function will be made to loop through
+// TODO: all channels if the *id* parameter is not provided
+// TODO: ...After channels.json is finished :")
 export async function get_upcoming_streams(id: string, browser_p?: puppeteer.Browser): Promise<UpcomingStream[]> {
     const data = await get_html(`https://youtube.com/channel/${id}/videos?view=2&live_view=502`, browser_p);
     if (!data)throw "UNABLE TO GET PAGE HTML DATA";
