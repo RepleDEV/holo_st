@@ -1,7 +1,7 @@
 // TODO: Looping of all the channels will actually be better
 // TODO: if done here :>
 
-import puppeteer,{ Browser } from "puppeteer";
+import puppeteer, { Browser } from "puppeteer";
 import * as path from "path";
 
 import { Channels, OngoingStream, UpcomingStream } from "./globals";
@@ -11,7 +11,9 @@ import { get_ongoing_streams } from "./modules/get_ongoing_streams";
 
 async function get_channels(): Promise<Channels> {
     const channelsPath = path.resolve("./config/channels.json");
-    const channels = JSON.parse(await fs.readFile(channelsPath, { encoding: "utf-8" }));
+    const channels = JSON.parse(
+        await fs.readFile(channelsPath, { encoding: "utf-8" })
+    );
 
     return channels;
 }
@@ -23,7 +25,7 @@ export async function get_all_upcoming_streams(): Promise<UpcomingStream[]> {
 
     const res: UpcomingStream[] = [];
 
-    for (let i = 0;i < channels.length;i++) {
+    for (let i = 0; i < channels.length; i++) {
         const channelId = channels[i].channel.id;
 
         const upcomingStreams = await get_upcoming_streams(channelId, browser);
@@ -42,7 +44,7 @@ export async function get_all_ongoing_streams(): Promise<OngoingStream[]> {
 
     const res: OngoingStream[] = [];
 
-    for (let i = 0;i < channels.length;i++) {
+    for (let i = 0; i < channels.length; i++) {
         const channelId = channels[i].channel.id;
 
         console.log("Checking %s", i + 1);

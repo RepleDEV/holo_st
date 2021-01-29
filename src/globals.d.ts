@@ -7,9 +7,9 @@ export interface YoutubeVideoListResponse {
     pageInfo: {
         totalResults: number;
         resultsPerPage: number;
-        [key:string]: any;
-    }
-    [key:string]: any;
+        [key: string]: any;
+    };
+    [key: string]: any;
 }
 
 export interface YoutubeVideoItems {
@@ -21,7 +21,7 @@ export interface YoutubeVideoItems {
         channelId: string;
         title: string;
         description: string;
-        thumbnails: YoutubeThumbnails
+        thumbnails: YoutubeThumbnails;
         channelTitle: string;
         tags: string[];
         categoryId: string;
@@ -29,18 +29,18 @@ export interface YoutubeVideoItems {
         localized: {
             title: string;
             description: string;
-        }
+        };
         defaultAudioLanguage: string;
-        [key:string]: any;
-    }
+        [key: string]: any;
+    };
     liveStreamingDetails: {
         actualStartTime: string;
         scheduledStartTime: string;
         concurrentViewers: string;
         activeLiveChatId: string;
-        [key:string]: any;    
-    }
-    [key:string]: any;
+        [key: string]: any;
+    };
+    [key: string]: any;
 }
 
 export interface YoutubeThumbnails {
@@ -98,7 +98,7 @@ export interface Channel {
     channel: {
         name: string;
         id: string;
-    }
+    };
 }
 
 export type Channels = Channel[];
