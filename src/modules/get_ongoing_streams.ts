@@ -1,23 +1,20 @@
 import cheerio from "cheerio";
 
 import { Browser } from "puppeteer";
-import { UpcomingStream } from "../globals"
-import { parse_time } from "./parse_time";
-import { config } from "dotenv";
-import { get_stream_info } from "./get_stream_info";
+import { OngoingStream } from "../globals";
 import { get_html } from "./get_html";
+import { get_stream_info } from "./get_stream_info";
+import { parse_time } from "./parse_time";
 
-config();
-
-export async function get_upcoming_streams(id: string, browser_p?: Browser): Promise<UpcomingStream[]> {
-    const data = await get_html(`https://youtube.com/channel/${id}/videos?view=2&live_view=502`, browser_p);
+export async function get_ongoing_streams(id: string, browser_p?: Browser): Promise<OngoingStream[]> {
+    const data = await get_html(`https://youtube.com/channel/${id}/videos?view=2&live_view=501`, browser_p);
     if (!data)throw "UNABLE TO GET PAGE HTML DATA";
 
     const $ = cheerio.load(data);
-
-    const hasUpcomingStreams = $("div#label-text.style-scope.yt-dropdown-menu").text() == "Upcoming live streams";
-    if (!hasUpcomingStreams)return [];
-
+    
+    const hasOngoingStreams = $("div#label-text.style-scope.yt-dropdown-menu").text() == "Live now";
+    if (!hasOngoingStreams)return [];
+    
     const streamIds: string[] = [];
 
     $("ytd-app div#content ytd-page-manager ytd-browse div#primary div#items")
@@ -29,7 +26,7 @@ export async function get_upcoming_streams(id: string, browser_p?: Browser): Pro
             if (streamId)streamIds.push(streamId);
         });
 
-    const upcomingStreams: UpcomingStream[] = [];
+    const ongoingStreams: OngoingStream[] = [];
 
     for (let i = 0;i < streamIds.length;i++) {
         const streamId = streamIds[i];
@@ -37,9 +34,9 @@ export async function get_upcoming_streams(id: string, browser_p?: Browser): Pro
 
         const { snippet, liveStreamingDetails } = stream_info.items[0];
         const { publishedAt, channelId, title, description, thumbnails, channelTitle, tags, categoryId, defaultAudioLanguage } = snippet;
-        const { scheduledStartTime, activeLiveChatId } = liveStreamingDetails;
+        const { scheduledStartTime, actualStartTime, concurrentViewers, activeLiveChatId } = liveStreamingDetails;
 
-        upcomingStreams.push({
+        ongoingStreams.push({
             streamId: streamId,
 
             title: title,
@@ -48,15 +45,18 @@ export async function get_upcoming_streams(id: string, browser_p?: Browser): Pro
             tags: tags,
             thumbnail: thumbnails,
 
+
             channelName: channelTitle,
             channelId: channelId,
 
             defaultAudioLanguage: defaultAudioLanguage,
 
             scheduledStartTime: parse_time(scheduledStartTime),
+            actualStartTime: parse_time(actualStartTime),
+            concurrentViewers: +concurrentViewers,
             activeLiveChatId: activeLiveChatId
         });
     }
 
-    return upcomingStreams;
+    return ongoingStreams;
 }

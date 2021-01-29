@@ -2,3 +2,4 @@
 // TODO: if done here :>
 
 export * from "./modules/get_upcoming_streams";
+export * from "./modules/get_ongoing_streams";
