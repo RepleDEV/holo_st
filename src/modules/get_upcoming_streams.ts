@@ -3,11 +3,8 @@ import cheerio from "cheerio";
 import { Browser } from "puppeteer";
 import { UpcomingStream } from "../globals"
 import { parse_time } from "./parse_time";
-import { config } from "dotenv";
 import { get_stream_info } from "./get_stream_info";
 import { get_html } from "./get_html";
-
-config();
 
 export async function get_upcoming_streams(id: string, browser_p?: Browser): Promise<UpcomingStream[]> {
     const data = await get_html(`https://youtube.com/channel/${id}/videos?view=2&live_view=502`, browser_p);

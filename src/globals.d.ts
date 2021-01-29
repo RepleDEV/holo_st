@@ -90,3 +90,15 @@ export interface OngoingStream extends Stream {
     actualStartTime: MomentObjectOutput;
     concurrentViewers: number;
 }
+
+export interface Channel {
+    name: string;
+    alias: string[];
+    generation: [string, number] | "GAMERS";
+    channel: {
+        name: string;
+        id: string;
+    }
+}
+
+export type Channels = Channel[];
