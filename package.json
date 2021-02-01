@@ -3,11 +3,12 @@
     "version": "1.0.0",
     "description": "Hololive Live Stream status checker",
     "main": "./dist/index.js",
-    "bin": "./dist/cli.ts",
+    "bin": "./dist/cli.js",
     "scripts": {
         "prettier": "prettier --write .",
         "watch": "tsc -w",
-        "postinstall": "tsc"
+        "postinstall": "tsc",
+        "start": "tsc && node ./dist/cli.js"
     },
     "keywords": [],
     "author": "",
