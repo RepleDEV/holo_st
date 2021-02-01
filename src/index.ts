@@ -8,15 +8,7 @@ import { Channels, OngoingStream, UpcomingStream } from "./globals";
 import { promises as fs } from "fs";
 import { get_upcoming_streams } from "./modules/get_upcoming_streams";
 import { get_ongoing_streams } from "./modules/get_ongoing_streams";
-
-async function get_channels(): Promise<Channels> {
-    const channelsPath = path.resolve("./config/channels.json");
-    const channels = JSON.parse(
-        await fs.readFile(channelsPath, { encoding: "utf-8" })
-    );
-
-    return channels;
-}
+import { get_channels } from "./modules/get_channels";
 
 export async function get_all_upcoming_streams(): Promise<UpcomingStream[]> {
     const channels = await get_channels();
