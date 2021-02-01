@@ -10,7 +10,7 @@ import { get_upcoming_streams } from "./modules/get_upcoming_streams";
 import { get_ongoing_streams } from "./modules/get_ongoing_streams";
 import { get_channels } from "./modules/get_channels";
 
-export async function get_all_upcoming_streams(): Promise<UpcomingStream[]> {
+export async function get_all_upcoming_streams(check_callback?: (upcoming_streams: UpcomingStream[], i: number) => void): Promise<UpcomingStream[]> {
     const channels = await get_channels();
 
     const browser = await puppeteer.launch();
@@ -22,6 +22,10 @@ export async function get_all_upcoming_streams(): Promise<UpcomingStream[]> {
 
         const upcomingStreams = await get_upcoming_streams(channelId, browser);
         res.push(...upcomingStreams);
+
+        if (typeof check_callback === "function") {
+            check_callback(upcomingStreams, i);
+        }
     }
 
     await browser.close();
@@ -29,7 +33,7 @@ export async function get_all_upcoming_streams(): Promise<UpcomingStream[]> {
     return res;
 }
 
-export async function get_all_ongoing_streams(): Promise<OngoingStream[]> {
+export async function get_all_ongoing_streams(check_callback?: (ongoing_streams: OngoingStream[], i: number) => void): Promise<OngoingStream[]> {
     const channels = await get_channels();
 
     const browser = await puppeteer.launch();
@@ -39,12 +43,12 @@ export async function get_all_ongoing_streams(): Promise<OngoingStream[]> {
     for (let i = 0; i < channels.length; i++) {
         const channelId = channels[i].channel.id;
 
-        console.log("Checking %s", i + 1);
+        const ongoingStreams = await get_ongoing_streams(channelId, browser);
+        res.push(...ongoingStreams);
 
-        const upcomingStreams = await get_ongoing_streams(channelId, browser);
-        res.push(...upcomingStreams);
-
-        console.log("Checked %s", i + 1);
+        if (typeof check_callback === "function") {
+            check_callback(ongoingStreams, i);
+        }
     }
 
     await browser.close();
