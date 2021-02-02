@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import yargs from "yargs";
 import logUpdate from "log-update";
 import moment from "moment";
@@ -54,11 +56,9 @@ const { argv } = yargs(process.argv.slice(2)).options({
         console.log("Checking all channels! This might take a while :>");
 
         const start_time = Date.now();
-
         let i = 0;
-        logUpdate(`Checking: ${++i}/42`);
-
         if (argv.u) {
+            logUpdate(`Checking: ${++i}/42`);
             const upcoming_streams = (await get_all_upcoming_streams(() => {
                 logUpdate(`Checking: ${++i}/42`);
             })).reverse();
@@ -79,6 +79,7 @@ const { argv } = yargs(process.argv.slice(2)).options({
             }
             console.log("---------------------->");
         } else if (argv.o) {
+            logUpdate(`Checking: ${++i}/42`);
             const ongoing_streams = await get_all_ongoing_streams(() => {
                 logUpdate(`Checking: ${++i}/42`);
             });
@@ -99,6 +100,57 @@ const { argv } = yargs(process.argv.slice(2)).options({
                 console.log(`Scheduled start time: ${moment(ongoing_stream.scheduledStartTime).format("dddd, MMMM Do YYYY, hh:mm:ss")}`)
                 console.log(`Started at: ${moment(ongoing_stream.actualStartTime).format("dddd, MMMM Do YYYY, hh:mm:ss")}`);
             }
+            console.log("---------------------->");
+        } else {
+            console.log("Checking for ongoing streams...")
+            logUpdate(`Checking: ${++i}/42`);
+            const ongoing_streams = await get_all_ongoing_streams(() => {
+                logUpdate(`Checking: ${++i}/42`);
+            });
+
+            logUpdate(`Finished checking for ongoing streams. Finished time: ${Date.now() - start_time}ms`);
+            logUpdate.done();
+
+            // Reset index
+            i = 0;
+
+            console.log("Checking for upcoming streams.")
+            logUpdate(`Checking: ${++i}/42`);
+            const upcoming_streams = (await get_all_upcoming_streams(() => {
+                logUpdate(`Checking: ${++i}/42`);
+            })).reverse();
+
+            logUpdate(`Finished checking channels. Finished time: ${Date.now() - start_time}ms`);
+            logUpdate.done();
+
+            if (!ongoing_streams.length) {
+                console.log("There are no ongoing streams!");
+            }
+    
+            for (let i = 0;i < ongoing_streams.length;i++)    {
+                const ongoing_stream = ongoing_streams[i];
+                console.log("---------------------->");
+                console.log(`Title: ${ongoing_stream.title}`);
+                console.log(`Channel name: ${ongoing_stream.channelName}`);
+                console.log(`Current viewers: ${ongoing_stream.concurrentViewers}`);
+                console.log(`Scheduled start time: ${moment(ongoing_stream.scheduledStartTime).format("dddd, MMMM Do YYYY, hh:mm:ss")}`)
+                console.log(`Started at: ${moment(ongoing_stream.actualStartTime).format("dddd, MMMM Do YYYY, hh:mm:ss")}`);
+            }
+
+            if (!upcoming_streams.length) {
+                console.log("---------------------->\n");
+                console.log("There are no upcoming streams currently!");
+                return;
+            }
+
+            for (let i = 0;i < upcoming_streams.length;i++)    {
+                const upcoming_stream = upcoming_streams[i];
+                console.log("---------------------->");
+                console.log(`Title: ${upcoming_stream.title}`);
+                console.log(`Channel name: ${upcoming_stream.channelName}`);
+                console.log(`Starts at: ${moment(upcoming_stream.scheduledStartTime).format("dddd, MMMM Do YYYY, hh:mm:ss")}`);
+            }
+
             console.log("---------------------->");
         }
         return;

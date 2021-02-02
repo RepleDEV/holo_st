@@ -8,8 +8,16 @@ First, install all dependencies
 $ npm i
 ```
 Then, run the start script.
+```bash
+$ npm start
 ```
-npm start
+To install globally, do
+```bash
+$ npm i -g # You might need administrator/superuser permissions to do this.
+```
+Then, run
+```bash
+$ holo_st
 ```
 ### Parameters
 `-o` - Checks for **ongoing** streams.  
@@ -21,6 +29,10 @@ npm start
 $ npm start Shishiro Botan -o
 ```
 This will check all ongoing streams from [Shishiro Botan](https://www.youtube.com/channel/UCUKD-uaobj9jiqB-VXt71mA)'s channel.
+
+## WARNING
+* Checking for channels _may_ take a very long time depending on your system, please be
+patient while using the module/CLI application.
 
 ## Developer Notes
 The module and the CLI application has not been heavily optimized and tested.  
