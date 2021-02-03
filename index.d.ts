@@ -16,9 +16,11 @@ export function get_ongoing_streams(id: string, browser?: Browser): Promise<Ongo
 
 /**
  * Gets all upcoming streams from (nearly) all Hololive channels.
+ * @param callback Optional callback function. Callback will be called after each channel check.
  */
-export function get_all_upcoming_streams(): Promise<UpcomingStream[]>;
+export function get_all_upcoming_streams(callback?: (ongoing_streams: UpcomingStream[], i: number) => void): Promise<UpcomingStream[]>;
 /**
  * Gets all ongoing streams from (nearly) all Hololive channels.
+ * @param callback Optional callback function. Callback will be called after each channel check.
  */
-export function get_all_ongoing_streams(): Promise<OngoingStream[]>;
+export function get_all_ongoing_streams(callback?: (ongoing_streams: OngoingStream[], i: number) => void): Promise<OngoingStream[]>;
