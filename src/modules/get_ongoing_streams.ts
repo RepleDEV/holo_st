@@ -1,6 +1,6 @@
 import cheerio from "cheerio";
 
-import { Browser } from "puppeteer";
+import { Browser, Page } from "puppeteer";
 import { OngoingStream } from "../globals";
 import { get_html } from "./get_html";
 import { get_stream_info } from "./get_stream_info";
@@ -8,11 +8,12 @@ import { parse_time } from "./parse_time";
 
 export async function get_ongoing_streams(
     id: string,
-    browser_p?: Browser
+    page?: Page
 ): Promise<OngoingStream[]> {
     const data = await get_html(
         `https://youtube.com/channel/${id}/videos?view=2&live_view=501`,
-        browser_p
+        page,
+        false
     );
     if (!data) throw "UNABLE TO GET PAGE HTML DATA";
 
@@ -27,7 +28,7 @@ export async function get_ongoing_streams(
     $("ytd-app div#content ytd-page-manager ytd-browse div#primary div#items")
         .children()
         .each((i, e) => {
-            const meta = $(e).find("div#dismissable > div#details > div#meta");
+            const meta = $(e).find("div#dismissible > div#details > div#meta");
             const streamId = meta
                 .children(":first")
                 .children(":last")

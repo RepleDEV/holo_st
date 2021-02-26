@@ -56,11 +56,10 @@ const { argv } = yargs(process.argv.slice(2)).options({
         console.log("Checking all channels! This might take a while :>");
 
         const start_time = Date.now();
-        let i = 0;
         if (argv.u) {
-            logUpdate(`Checking: ${++i}/42`);
-            const upcoming_streams = (await get_all_upcoming_streams(() => {
-                logUpdate(`Checking: ${++i}/42`);
+            logUpdate("Checking: 1/42");
+            const upcoming_streams = (await get_all_upcoming_streams((s, i, t) => {
+                logUpdate(`Finished in: ${t}ms. Checking: ${i+2}/42.`);
             })).reverse();
 
             logUpdate(`Finished checking channels. Finished time: ${Date.now() - start_time}ms`);
@@ -79,9 +78,9 @@ const { argv } = yargs(process.argv.slice(2)).options({
             }
             console.log("---------------------->");
         } else if (argv.o) {
-            logUpdate(`Checking: ${++i}/42`);
-            const ongoing_streams = await get_all_ongoing_streams(() => {
-                logUpdate(`Checking: ${++i}/42`);
+            logUpdate(`Checking: 1/42`);
+            const ongoing_streams = await get_all_ongoing_streams((s, i ,t) => {
+                logUpdate(`Finished in: ${t}ms. Checking: ${i+2}/42.`);
             });
 
             logUpdate(`Finished checking channels. Finished time: ${Date.now() - start_time}ms`);
@@ -103,21 +102,18 @@ const { argv } = yargs(process.argv.slice(2)).options({
             console.log("---------------------->");
         } else {
             console.log("Checking for ongoing streams...")
-            logUpdate(`Checking: ${++i}/42`);
-            const ongoing_streams = await get_all_ongoing_streams(() => {
-                logUpdate(`Checking: ${++i}/42`);
+            logUpdate(`Checking: 1/42`);
+            const ongoing_streams = await get_all_ongoing_streams((s, i, t) => {
+                logUpdate(`Finished in: ${t}ms. Checking: ${i+2}/42.`);
             });
 
             logUpdate(`Finished checking for ongoing streams. Finished time: ${Date.now() - start_time}ms`);
             logUpdate.done();
 
-            // Reset index
-            i = 0;
-
             console.log("Checking for upcoming streams.")
-            logUpdate(`Checking: ${++i}/42`);
-            const upcoming_streams = (await get_all_upcoming_streams(() => {
-                logUpdate(`Checking: ${++i}/42`);
+            logUpdate(`Checking: 1/42`);
+            const upcoming_streams = (await get_all_upcoming_streams((s, i, t) => {
+                logUpdate(`Finished in: ${t}ms. Checking: ${i+2}/42.`);
             })).reverse();
 
             logUpdate(`Finished checking channels. Finished time: ${Date.now() - start_time}ms`);
@@ -180,9 +176,11 @@ const { argv } = yargs(process.argv.slice(2)).options({
     } else if (argv.o) {
         const ongoing_streams = await get_ongoing_streams(channel.channel.id);
 
+        console.log(ongoing_streams.length);
+
         if (!ongoing_streams.length) {
             console.log("There are no ongoing streams!");
-            return;
+            process.exit();
         }
 
         for (let i = 0;i < ongoing_streams.length;i++)    {
@@ -195,4 +193,5 @@ const { argv } = yargs(process.argv.slice(2)).options({
         }
         console.log("---------------------->");
     }
+    process.exit();
 })();

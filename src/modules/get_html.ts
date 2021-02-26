@@ -1,24 +1,27 @@
-import puppeteer, { Browser } from "puppeteer";
+import puppeteer, { Browser, Page } from "puppeteer";
 
 export async function get_html(
     url: string,
-    browser_p?: Browser
+    page_p?: Page,
+    close?: boolean
 ): Promise<string> {
-    const browser = browser_p || (await puppeteer.launch());
-    const page = await browser.newPage();
+    let browser: Browser = page_p ? page_p.browser(): await puppeteer.launch();
+    const page = page_p || await browser.newPage();
 
-    await page.setUserAgent(
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36"
-    );
+    if (!page_p) {
+        await page.setUserAgent(
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36"
+        );
+    }
     await page.goto(url, { waitUntil: "networkidle0" });
     const data =
         (await page.evaluate(() => document.querySelector("*")?.outerHTML)) ||
         "";
 
     // Don't close the browser if it's imported but close the page.
-    if (browser_p) {
+    if (page_p && close) {
         await page.close();
-    } else {
+    } else if (close) {
         await browser.close();
     }
 
